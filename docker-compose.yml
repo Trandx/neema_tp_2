@@ -1,0 +1,91 @@
+version: '3.8'
+services:
+######### services et outils ############
+  # nginx:
+  #   container_name: neema_nginx
+  #   hostname: nginx
+  #   image: nginx:stable-alpine as production-stage
+  #   #restart: always
+  #   #tty: true
+  #   ports:
+  #       - "80:80"
+  #       - "443:443"
+  #   volumes:
+  #       - ./services/nginx:/etc/nginx/conf.d
+  #       - ./services/nginx:/var/www/local.dev
+  #       - ./services/nginx/ssl/:/etc/nginx/ssl/
+  #   # depends_on:
+  #   #   - php
+  #   networks:
+  #       - neema_network
+
+  # php:
+  #   container_name: neema_php
+  #   build: 
+  #     context: .
+  #     dockerfile: ./services/php/Dockerfile
+  #   volumes:
+  #       - ./services/php:/var/www/local.dev
+  #       - ./services/php:/usr/local/etc/php  #/php.ini
+  #   networks:
+  #       - neema_network   
+
+#### applications projects ############
+
+############ front-end #############
+  frontend:
+    container_name: neema_frontend
+    hostname: frontend
+    build: 
+      context: .
+      dockerfile: ./projects/frontend/Dockerfile
+    environment:
+      CHOKIDAR_USEPOLLING: 'true'
+      
+    volumes:
+      - ./projects/frontend:/app
+   
+    ports:
+      - 4001:8080
+    depends_on:
+      - backend
+    networks:
+      - neema_network
+
+############# backend ##############
+  backend:
+    container_name: neema_backend
+    hostname: backend
+    build: 
+      context: .
+      dockerfile: ./projects/backend/Dockerfile
+      
+    volumes:
+      - ./projects/backend:/app
+   
+    ports:
+      - 5001:3333
+    depends_on:
+      - db
+    networks:
+      - neema_network
+
+  db:
+    container_name: neema_db
+    image: postgres
+    #restart: always
+    volumes:
+     - ./services/db:/usr/lib/postgresql/data
+     - ./services/db/init.sql:/docker-entrypoint-initdb.d/init.sql # will setup dev database adonis_app for us
+    
+    environment:
+      #POSTGRES_DB: db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - 5436:5432
+    networks:
+      - neema_network
+
+networks:
+  neema_network:
