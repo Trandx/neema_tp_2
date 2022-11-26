@@ -44,6 +44,7 @@ services:
       
     volumes:
       - ./projects/frontend:/app
+      - ./projects/frontend/node_modules:/app/node_modules
    
     ports:
       - 4001:8080
@@ -62,6 +63,7 @@ services:
       
     volumes:
       - ./projects/backend:/app
+      - ./projects/backend/node_modules:/app/node_modules
    
     ports:
       - 5001:3333

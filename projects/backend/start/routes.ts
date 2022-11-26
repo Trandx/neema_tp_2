@@ -20,6 +20,15 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
+Route.get('/ff', async () => {
   return { hello: 'world' }
 })
+
+Route.get('/', 'TicketsController.index')
+
+Route.post('add', 'TicketsController.create')
+Route.post('update/:id', 'TicketsController.update')
+
+Route.put('edit/:id', 'TicketsController.edit')
+
+Route.delete('delete/:id', 'TicketsController.destroy')

@@ -1,5 +1,5 @@
 command to build and remove orphans container
-    sudo docker-compose --env-file=./dailymotion/laravel/.env -f ./docker-compose.yml up -d --build --force-recreate --no-deps --remove-orphans 
+    sudo docker-compose up -d --build --force-recreate --no-deps --remove-orphans 
 
 commad to delete <none> container
     docker rmi $(docker images -f "dangling=true" -q) -f
