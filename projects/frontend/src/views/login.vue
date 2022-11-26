@@ -10,81 +10,46 @@
             </div>
     
             <div class=" sm:px-4 sm:py-2  md:w-1/2 flex justify-center items-end  ">
-              <h1 class=" uppercase md:text-6xl sm:text-4xl  sm:text-center font-bold text-primary slide-right-1"> N</h1>
-              <h1 class=" uppercase md:text-4xl sm:text-2xl  sm:text-center font-bold text-white slide-left-1">ucle</h1>
+              <h1 class=" uppercase md:text-6xl sm:text-4xl  sm:text-center font-bold text-primary slide-right-1"> T</h1>
+              <h1 class=" uppercase md:text-4xl sm:text-2xl  sm:text-center font-bold text-white slide-left-1">p</h1>
               <h1 class=" uppercase md:text-4xl sm:text-2xl  sm:text-center font-bold text-primary slide-down-1">-</h1>
-              <h1 class=" uppercase md:text-4xl sm:text-2xl  sm:text-center font-bold text-white slide-right-1">x SSO</h1>
+              <h1 class=" uppercase md:text-4xl sm:text-2xl  sm:text-center font-bold text-white slide-right-1">2</h1>
                 <!-- <img src="/img/nucle-x_name.png"  type="image/png"> -->
             </div>
           </div>
     
-            <div class=" h-28">
-              <div class=" md:flex md:justify-around md:items-center ">
+            <div class="mt-20">
+              
+
+                <div class="flex items-center justify-center ">
     
-                <div class="md:mt-20 md:w-1/3 sm:h-52 sm:flex sm:justify-center sm:items-center fade-in-3">
-                    <ComputerSecure class="sm:w-72 md:w-full"/>
-                  <!-- <img class="sm:w-72 md:w-full" src="@/assets/images/Secure_Server.svg"/> -->
-                </div>
-    
-                <div class="md:w-auto sm:w-full slide-up-1">
-                  <div class=" w-[450px]  max-w-full relative m-auto">
-                    <div class="  w-full">
-                      <div class=" p-4 ">
-                        
-                        <Danger  ref="alert" v-show="alert.name == 'AlertDanger'">
-                          <template #alertMessage >
-                            {{alert.message}}
-                          </template>
-                        </Danger>
-    
-    
-                          <div class="w-full  rounded-lg shadow-gray-800 shadow-md bg-secondary border border-white">
-    
-                              <div class="py-6 px-6 lg:px-8">
-                                <div class="border-b md:border-gray-100 sm:border-gray-500">
-                                  <h3 class="mb-1 text-4xl font-extrabold  sm:text-gray-800 md:text-white">Login</h3>
-                                </div>
-                                  <form class="space-y-6 pt-4" @submit.prevent="login">
-                                      <div>
-                                        <div class="flex justify-start p-0 m-0">
-                                          <label for="email" class="block mb-2 text-sm font-medium w-1/2  sm:text-gray-800 md:text-white text-left">Your email</label>
-                                          <span :class="goodFormat&&'hidden'" class=" text-red-500 text-sm text-right block mt-1 w-1/2" > Email isn't on good format</span>
-                                        </div>
-    
-                                        <!-- <input type="email" @blur="isGoodFormat" v-model="user.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,10}$" id="email" class=" border  text-sm rounded-lg  block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white" placeholder="name@company.com" required> -->
-                                        <input type="text"  v-model="user.login"   class=" border  text-sm rounded-lg  block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white" placeholder="email/phone/username" required>
-    
-                                      </div>
-                                      <div>
-                                          <label for="password" class="block mb-2 text-sm font-medium  sm:text-gray-800 md:text-white">Your password</label>
-                                          <input type="password" v-model="user.password" id="password" placeholder="••••••••" class=" border  text-sm rounded-lg  block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white" required>
-                                      </div>
-                                      <div class="flex justify-between">
-                                        
-                                          <!-- <div class="flex items-start">
-                                              <div class="flex items-center h-5">
-                                                  <input id="remember" v-model="user.remember" type="checkbox" value="" class="w-4 h-4 text-primary bg-gray-100 rounded border-gray-300 focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" >
-                                              </div>
-                                              <label for="remember" class="ml-2 text-sm font-medium text-gray-600">Remember me</label>
-                                          </div> -->
-                                          <a href="#" class="text-sm text-primary hover:underline ">Lost Password?</a>
-                                      </div>
-                                      <button type="submit" class="w-full text-white  focus:ring-4 focus:outline-none font-medium
-                                        rounded-lg text-sm px-5 py-2.5 text-center bg-primary hover:bg-gray-600 focus:ring-gray-700">
-                                        Login
-                                      </button>
-                                      <div class="text-sm font-medium text-gray-500 ">
-                                          Not registered? <a href="#" class=" hover:underline text-primary">Create account</a>
-                                      </div>
-                                  </form>
-                              </div>
-                          </div>
-                      </div>
+                    <div class="bg-red-800 text-white font-bold rounded-lg border shadow-lg p-10">
+                      (1) New Item
                     </div>
-                  </div>
+
+                    <div class="bg-green-800 text-white font-bold rounded-lg border shadow-lg p-10">
+                      (2) Import Single
+                    </div>
+                    
+
+                </div> <br/>
+
+                <div class="flex items-center justify-center" >
+    
+                    <div class="bg-indigo-800 text-white font-bold rounded-lg border shadow-lg p-10">
+                      (3) Import Batch
+                    </div>
+
+                    <div class="bg-yellow-800 text-white font-bold rounded-lg border shadow-lg p-10">
+                      (4) List
+                    </div> <br/>
+                    
+
                 </div>
     
-              </div>
+                
+    
+              
             </div>
     
     
