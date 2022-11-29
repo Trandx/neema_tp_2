@@ -8,8 +8,8 @@
                     <i class="fa-solid fa-x text-primary"></i>
                     <span class="sr-only">Close modal</span>
                 </button>
-                <div class="px-2 lg:px-4">
-                    <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white text-left capitalize ">
+                <div class="px-4 mx-4 w-full">
+                    <h3 class="  text-xl font-medium text-gray-900 dark:text-white text-left capitalize ">
                         <slot name="modalTitle" ></slot>
                     </h3>
 

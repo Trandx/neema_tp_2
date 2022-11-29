@@ -7,10 +7,10 @@ FROM node:lts-alpine as build-stage
 WORKDIR /app
 
 # copie 'package.json' et 'package-lock.json' (si disponible)
-#COPY ./clients/nucle-x_sso_front/package*.json ./
+# COPY ./projects/backend/package*.json ./
 
 # installe les dépendances du projet
-#RUN npm install
+# RUN npm install
 
 # copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
 COPY ./projects/backend .

@@ -1,0 +1,18 @@
+--- add db module ----
+yarn add  @adonisjs/lucid
+
+--- configure ---
+
+node ace configure @adonisjs/lucid
+    # CREATE: config/database.ts
+    # UPDATE: .env,.env.example
+    # UPDATE: tsconfig.json { types += "@adonisjs/lucid" }
+    # UPDATE: .adonisrc.json { commands += "@adonisjs/lucid/build/commands" }
+    # UPDATE: .adonisrc.json { providers += "@adonisjs/lucid" }
+
+---- validate environement variables ---- 
+
+
+--- install module of auth ---
+npm i @adonisjs/auth
+

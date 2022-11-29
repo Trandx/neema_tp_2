@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../stores/auth';
 
 const __API_BASE_URI_ = import.meta.env.VITE_API_BASE_URI
-const __API_URI__ = __API_BASE_URI_+import.meta.env.VITE_APP_BASE_URI_PATH
+const __API_URI__ = __API_BASE_URI_//+import.meta.env.VITE_APP_BASE_URI_PATH
 
 const httpEndpoint = __API_URI__
 

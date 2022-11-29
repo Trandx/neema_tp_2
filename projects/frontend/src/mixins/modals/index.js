@@ -40,7 +40,7 @@ export default {
             this.modalComfirm.message = `Are you sure to delete ${name} ?`
         },
 
-        openModal(title, datas){
+        openModal(title, datas, componentName){
             this.modal = {
                 open: true,
                 title: title ,
@@ -48,7 +48,7 @@ export default {
             }
             // this.$refs.modal.open = true;
             // this.modalData.title = "create new "+title
-            // this.view.name = componentName
+             this.view.name = componentName
             //  this.view.datas = {}
         },
 

@@ -22,6 +22,14 @@ const router = createRouter({
       component: () => import('@/views/scan.vue'),
     },
     {
+      path: '/ticket',
+      name: 'Ticket',
+      meta: {
+        //middleware: [auth.authenticaded]
+      },
+      component: () =>import('@/views/ticket.vue'),
+    },
+    {
       path: '/login',
       name: 'Login',
       meta: {
