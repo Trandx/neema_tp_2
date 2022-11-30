@@ -38,7 +38,7 @@
     </div>
 
     <div class="p-4">
-      <Tables />
+      <Tables @search="key => search(key)" v-bind="{ticketList,pagination}" />
     </div>
     
     
@@ -83,11 +83,11 @@
         </template>
       </AlertDanger>
 
-      <AlertDanger  ref="alert_success" v-show="alert.name == 'AlertSuccess'" >
+      <AlertSuccess  ref="alert_success" v-show="alert.name == 'AlertSuccess'" >
         <template #alertMessage >
           {{alert.message}}
         </template>
-      </AlertDanger>
+      </AlertSuccess>
     
     <!--  -->
         
@@ -161,7 +161,7 @@ export default {
 
             keyWord: null,
 
-            clientList: null,
+            ticketList: null,
             pagination: null 
   
           }
@@ -173,23 +173,13 @@ export default {
         },
         save(datas){
 
-          ticketsService.save(datas).then((datas) => {
+          this.alert.message = ""
 
-            console.log(datas);
+          ticketsService.save(datas).then((datas) => {
 
             if(!datas.status){
 
-              this.alert.message += datas.data.map(value=> value.field +": "+value.message+'')
-              this.alert.name = "AlertDanger"
-              this.$refs.alert_danger.open =  this.alert.open = true;
-              this.$refs.alert_danger.showBtnClose = true 
-
-              setTimeout(()=>{
-                if(this.$refs.alert_danger.open){
-                  this.$refs.alert_danger.open = false;
-                }
-              
-              }, 10000)
+              this.showErrors(datas)
                 
             }else{
 
@@ -206,7 +196,6 @@ export default {
               
               }, 10000)
               
-              console.log(data);
               //save user token
               // if(this.user.remember){
               //   Cookies.saveUserToken()
@@ -220,8 +209,49 @@ export default {
 
           })
         
+        },
+        search: function(key = null){
+
+          this.alert.message = ""
+
+          ticketsService.getDatas('?search_key='+key).then((datas) => {
+
+            if(datas.status){
+              this.ticketList = datas.data.data
+              this.pagination = datas.data.meta
+            }else{
+              this.showErrors(datas)
+            }
+            //console.log(datas)
+          })
+        },
+
+        getDatas(){
+          this.search()
+        },
+
+        showErrors(datas){
+          this.alert.message += datas.data?.map(value=> value.field +": "+value.message+'') || datas.message
+          this.alert.name = "AlertDanger"
+          this.$refs.alert_danger.open =  this.alert.open = true;
+          this.$refs.alert_danger.showBtnClose = true 
+
+          setTimeout(async ()=>{
+            if(this.$refs.alert_danger.open){
+              this.$refs.alert_danger.open = false;
+            }
+          
+          }, 10000)
+        },
+
+        delete(id){
+          console.log(id)
         }
       },
+
+    mounted(){
+      this.getDatas()
+    },
 
     mixins: [openModal, formMixin],
 }

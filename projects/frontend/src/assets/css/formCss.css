@@ -1,5 +1,6 @@
 
 :root{
+/* --color-primary: rgb(0 184 179); */
 --ms-font-size: 1rem;
 --ms-line-height: 1.375;
 --ms-bg: #FFFFFF;
@@ -77,6 +78,7 @@
 }
 
 .multiselect {
+
     --ms-bg: rgba(17, 24, 39);
     color: white;
     --ms-tag-bg: rgba(55 65 81);
@@ -97,9 +99,14 @@
   
     --ms-group-label-bg: rgb(17, 24, 39) ;
 
+    --ms-clear-color:rgb(255, 255, 255);
+    --ms-clear-color-hover: rgb(var(--color-primary));
+    --ms-caret-color: rgb(255, 255, 255);
+    
+
     --ms-option-line-height: 1.375;
-    --ms-option-bg-pointed: rgb(17, 24, 39);
-    --ms-option-color-pointed: #ffffff;
+    --ms-option-bg-pointed: rgb(23, 55, 124);
+    --ms-option-color-pointed: #0a0a0a;
 
     --ms-dropdown-bg: rgba(55 65 81);
     --ms-dropdown-border-color: #ffffff;

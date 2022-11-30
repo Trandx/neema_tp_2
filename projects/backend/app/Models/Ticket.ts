@@ -33,6 +33,9 @@ export default class Ticket extends BaseModel {
   @column()
   public updated_by: string
 
+  @column()
+  public travel_type: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

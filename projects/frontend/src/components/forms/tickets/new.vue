@@ -63,7 +63,30 @@
                   <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                     
                   </div>
-                  <input  v-model="formData.airline" type="text" class="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Flight">
+                  <Multiselect class= "multiselect
+                    [--ms-dropdown-bg:rgb(var(--color-primary))] 
+                  [--ms-group-label-bg-selected-pointed:white]
+                  [--ms-option-color-pointed:black]
+                  [--ms-option-bg-selected:white]
+                  [--ms-option-color-selected-po:black]
+                  [--ms-option-bg-selected-pointed:white]
+                  [--ms-option-bg-pointed:white]
+                  bg-white text-black
+                  [--ms-caret-color:rgb(53,47,47)]
+                  [--ms-option-color-selected:rgb(53,47,47)]
+                  [--ms-clear-color:black]
+                  [--ms-clear-color-hover:rgb(var(--color-primary))]
+                 font-medium
+                  "
+                  v-model="formData.travel_type"
+                    mode="single"
+                    :taggable="true"
+                    placeholder="select travel Type"
+                    :close-on-select="true"
+                    :options="options.travel_type"
+                    label="name"
+                />
+                  
                 </div>
                 
             </div>
@@ -95,10 +118,25 @@
             </div>
             <div class="w-[80%] flex justify-start">
 
-                <div class="relative space-x-1 w-full">
-                  <div class="flex rounded-l-lg absolute inset-y-0 left-0 items-center ml-1 p-2.5 pointer-events-none bg-green-500 text-white font-semibold">
-                    XAF
-                  </div>
+              <Multiselect class= "multiselect absolute z-50 
+                [--ms-dropdown-bg:rgb(var(--color-primary))] 
+              [--ms-group-label-bg-selected-pointed:white]
+              [--ms-option-color-pointed:black]
+                [--ms-option-bg-selected:rgb(34,197,94)]
+                [--ms-option-bg-selected-pointed:rgb(34,197,94)]
+              [--ms-option-bg-pointed:white]
+              bg-green-500 text-white font-semibold w-[140px]"
+                v-model="formData.currency"
+                  mode="single"
+                  :taggable="true"
+                  placeholder=""
+                  :close-on-select="true"
+                  :options="options.currency"
+                  label="name"
+                  
+              />
+
+                <div class="relative space-x-1 w-full ml-[145px]">
                   <input v-model="formData.amount" type="number" class="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg block w-full pl-12 p-2.5" placeholder="Select date">
                 </div>
                 
@@ -107,10 +145,10 @@
       </div>
         
        <div class="justify-between flex px-4 p-2 border-t-2 ">
-            <button @click.prevent="save" class="mx-5 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary focus:ring-primary text-white ">
+            <button @click.prevent="save" class="mx-5 w-full hover:bg-white hover:text-gray-800 hover:border  hover:border-gray-500 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary focus:ring-primary text-white ">
                 Save
             </button>
-            <button @click.prevent="resetForm" type="submit" class=" mx-5 w-full text-gray-500 border border-gray-500 bg-white-700 hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800">
+            <button @click.prevent="resetForm" type="submit" class=" mx-5 w-full text-gray-500 border border-gray-500 bg-white-700 hover:bg-white-800 focus:ring-4 focus:outline-none focus:ring-white-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white-600 dark:hover:bg-white-700 dark:focus:ring-white-800 hover:bg-primary hover:text-white">
                 Cancel
             </button>
 
@@ -124,15 +162,37 @@
 
 <script>
 import formMixin from '../../../mixins/forms/index'
+import Multiselect from '@vueform/multiselect'
 
 export default {
     name: "New",
 
     props:["datas",],
 
+    components:{
+      Multiselect,
+    },
+
     data(){
         return {
-          formData: {},
+          formData: {
+            currency: 'xaf'
+          },
+          
+          options:{
+            currency: [
+              { name: 'XAF', value: 'xaf' },
+              { name: 'GHS', value: 'ghs' },
+              { name: 'EUR', value: 'eur' },
+              { name: '$', value: '$' }
+            ],
+            travel_type: [
+              { name: 'Flight', value: 'flight', default:true },
+              { name: 'Hotel', value: 'hotel' },
+              { name: 'Car', value: 'car' },
+              { name: 'Mix', value: 'mix' }
+            ]
+          } 
           
         }
     },

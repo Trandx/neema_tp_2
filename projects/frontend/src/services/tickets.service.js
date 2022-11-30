@@ -9,13 +9,29 @@ class TicketsService {
             //   'Content-Type': 'multipart/form-data'
             // },
             }).then((value) =>  value.data).catch((value) => {
-                console.log(value)
             return {
                 status: false,
                 message: value.message,
                 data: value.response?.data?.errors
             }
         })
+    }
+
+    async getDatas(data){
+
+      data =   new URLSearchParams(data).toString()
+
+      return await axiosClient.get("?"+data, {
+          // headers: {
+          //   'Content-Type': 'multipart/form-data'
+          // },
+          }).then((value) =>  value.data).catch((value) => {
+          return {
+              status: false,
+              message: value.message,
+              data: value.response?.data?.errors
+          }
+      })
     }
 
     async search(keyword){
