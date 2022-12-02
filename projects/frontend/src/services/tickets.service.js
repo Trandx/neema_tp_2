@@ -19,9 +19,10 @@ class TicketsService {
 
     async getDatas(data){
 
-      data =   new URLSearchParams(data).toString()
+      //data =   new URLSearchParams(data).toString()
 
-      return await axiosClient.get("?"+data, {
+      return await axiosClient.get("", {
+        data: data
           // headers: {
           //   'Content-Type': 'multipart/form-data'
           // },
@@ -34,22 +35,41 @@ class TicketsService {
       })
     }
 
-    async search(keyword){
+    async deleteDatas(data){
 
-      return await axiosClient.post("", {keyword: keyword, search: true}).then((value) =>  value.data).catch((value) => {
-        return {
-            status: false,
-            message: value.message,
-        }
+     // data =   new URLSearchParams(data).toString()
+
+      return await axiosClient.delete("delete", {
+          data: data
+          // headers: {
+          //   'Content-Type': 'multipart/form-data'
+          // },
+          }).then((value) =>  value.data).catch((value) => {
+          return {
+              status: false,
+              message: value.message,
+              data: value.response?.data?.errors
+          }
       })
-
-
-        //return apollo.mutation.createUser(user)
-        // const {result, loading, error} = apollo.mutation.createUser(user)
-        // //store.addLoggedUserInStore(result.value)
-
-        // return {result, loading, error}
     }
+
+
+    // async search(keyword){
+
+    //   return await axiosClient.post("", {keyword: keyword, search: true}).then((value) =>  value.data).catch((value) => {
+    //     return {
+    //         status: false,
+    //         message: value.message,
+    //     }
+    //   })
+
+
+    //     //return apollo.mutation.createUser(user)
+    //     // const {result, loading, error} = apollo.mutation.createUser(user)
+    //     // //store.addLoggedUserInStore(result.value)
+
+    //     // return {result, loading, error}
+    // }
 
     async upload(data,  onUploadProgress){
 

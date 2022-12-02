@@ -1,14 +1,14 @@
 <template>
-  <div class=" max-h-max  bg-gray-500 text-white">
+  <div class=" max-h-max text-white">
     
-    <nav class=" px-2 sm:px-4 py-2.5 bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 ">
+    <nav class=" px-2 sm:px-4 py-2.5 bg-primary fixed w-full z-20 top-0 left-0 border-b-4 border-gray-800">
       <div class="container flex flex-wrap items-center justify-between mx-auto">
       <a href="https://trandx-code.ml/" class="flex items-center">
           <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-9" alt="Flowbite Logo">
           <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Ticket</span>
       </a>
       <div class="flex md:order-2">
-          <button type="button" class="text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 ">New item</button>
+          <button type="button" class="text-primary bg-white hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 ">New item</button>
           <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2   focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
@@ -17,7 +17,7 @@
       </div>
     </nav>
 
-    <div class="bg-gray-500 relative h-[200px] w-full mt-16 py-2 font-extrabold">
+    <div class=" relative h-[200px] w-full mt-16 py-2 font-extrabold">
 
       <div class="flex justify-center w-max m-auto my-4">
         <button @click.prevent="openModal('New item', {}, 'NewTicket' )"  class="text-white hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  h-[70px]  w-[100px]  text-center mx-4 bg-red-500">
@@ -31,14 +31,15 @@
         <button @click.prevent="openModal('Import Batch', {}, 'ImportDataTickect' )" class=" text-white hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 h-[70px]  w-[100px] p-3 text-center  mx-4 bg-blue-500">
           Import Batch
         </button>
-        <button @click.prevent="openModal('List', {}, 'NewTicket' )" class="text-white hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 h-[70px]  w-[100px] p-3 text-center  bg-yellow-500">
+        <button @click.prevent="refreshDatas" class="text-white hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 h-[70px]  w-[100px] p-3 text-center  bg-yellow-500">
           List
         </button>
       </div>
     </div>
 
     <div class="p-4">
-      <Tables @search="key => search(key)" v-bind="{ticketList,pagination}" />
+      <Tables @search="key => search(key)" v-bind="{ticketList,pagination}"  @onUpdate="id => onUpdate(id)" 
+        @onDelete="id =>onDelete(id)" />
     </div>
     
     
@@ -57,7 +58,7 @@
 
                 </div>
                 <div class=" max-h-[450px] overflow-y-scroll">
-                  <component :is="view.name" :datas="modal.datas" @upsert="data=>save(data)" ></component> 
+                  <component :is="view.name" :datas="modal.datas" @airData="data => sendAirFileData(data)" @upsert="data=>save(data)" ></component> 
                    <!-- <NewTicket :datas="modal.datas" /> -->
                 </div>
             </div>
@@ -111,6 +112,7 @@
 //import Modal from "../components/modals/index.vue"
 import ModalConfirm from '@/components/modals/confirm.vue'
 import NewTicket from '@/components/forms/tickets/new.vue'
+import EditTicket from '@/components/forms/tickets/edit.vue'
 import ImportDataTickect from '@/components/forms/tickets/importData.vue'
 import Tables from '@/components/Tables/index.vue'
 import AlertDanger from '../components/alerts/danger.vue'
@@ -125,6 +127,7 @@ export default {
       //Modal,
       ModalConfirm,
       NewTicket,
+      EditTicket,
       ImportDataTickect,
       Tables,
       AlertDanger,
@@ -132,10 +135,14 @@ export default {
     },
     data(){
           return {
+
             alert: {
                 name: null,
                 message: "",
             },
+
+            itemId : [],
+
             modal: {
                 open: false,
                 title: null,
@@ -168,9 +175,59 @@ export default {
       },
 
       methods: {
+
         modalConfirmCallback(value){
-            console.log(value);
+            //console.log(value);
+
+            if(value){
+              // cal service to delete
+              const data = {id: this.itemId}
+              ticketsService.deleteDatas(data).then((datas) => {
+
+                if(datas.status){
+                  this.getDatas()
+                  this.showSuccess(datas.message)
+                  
+                }else{
+                  this.showErrors(datas)
+                }
+                //console.log(datas)
+              })
+              // get datas
+              
+            }
+
         },
+
+        sendAirFileData(data){
+
+          ticketsService.save(data).then((datas) => {
+
+              if(!datas.status){
+
+              this.showErrors(datas)
+             
+                
+            }else{
+
+              this.showSuccess(datas.message)
+
+              this.ticketList.push(datas.data)
+              
+              //save user token
+              // if(this.user.remember){
+              //   Cookies.saveUserToken()
+              // }
+
+              //loadPrimaryData()
+              //const hist = useHistoricStore()
+              
+            }
+
+          })
+          
+        },
+
         save(datas){
 
           this.alert.message = ""
@@ -183,19 +240,13 @@ export default {
                 
             }else{
 
-              this.alert.message = datas.message
-              this.alert.name = "AlertSuccess"
-              this.alert.open = true
-              this.$refs.alert_success.open = true;
-              this.$refs.alert_success.showBtnClose = true 
+              this.getDatas()
 
-              setTimeout(()=>{
-                if(this.$refs.alert_success.open){
-                  this.$refs.alert_success.open = false;
-                }
+              this.showSuccess(datas.message)
+
               
-              }, 10000)
               
+              //this.ticketList.push(datas.data)
               //save user token
               // if(this.user.remember){
               //   Cookies.saveUserToken()
@@ -212,9 +263,10 @@ export default {
         },
         search: function(key = null){
 
-          this.alert.message = ""
+          const search_key = key?{search_key:key}:'';
 
-          ticketsService.getDatas('?search_key='+key).then((datas) => {
+          this.alert.message = ""
+          ticketsService.getDatas(search_key).then((datas) => {
 
             if(datas.status){
               this.ticketList = datas.data.data
@@ -226,11 +278,19 @@ export default {
           })
         },
 
+        refreshDatas(){
+          this.ticketList = null
+          this.pagination = null
+          this.search()
+        },
+
         getDatas(){
           this.search()
         },
 
         showErrors(datas){
+          this.alert.message = ""
+
           this.alert.message += datas.data?.map(value=> value.field +": "+value.message+'') || datas.message
           this.alert.name = "AlertDanger"
           this.$refs.alert_danger.open =  this.alert.open = true;
@@ -239,13 +299,45 @@ export default {
           setTimeout(async ()=>{
             if(this.$refs.alert_danger.open){
               this.$refs.alert_danger.open = false;
+              this.alert.message = ""
             }
           
           }, 10000)
         },
 
-        delete(id){
-          console.log(id)
+        showSuccess(message){
+          this.alert.message = ""
+          this.alert.message = message
+          this.alert.name = "AlertSuccess"
+          this.alert.open = true
+          this.$refs.alert_success.open = true;
+          this.$refs.alert_success.showBtnClose = true 
+
+          setTimeout(()=>{
+            if(this.$refs.alert_success.open){
+              this.$refs.alert_success.open = false;
+              this.alert.message = ""
+            }
+          
+          }, 10000)
+        },
+
+        onDelete(data){
+
+          this.openDelete(data.name)
+
+          this.itemId.push(data.id)
+
+        },
+
+        onUpdate(id){
+
+          const data = this.ticketList.filter((value) => value.id===id)[0]
+          
+          this.openModal('Update item', data, 'EditTicket')
+
+          //console.log(this.test)
+
         }
       },
 

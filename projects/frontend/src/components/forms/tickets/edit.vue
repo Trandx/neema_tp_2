@@ -76,15 +76,14 @@
                   [--ms-option-color-selected:rgb(53,47,47)]
                   [--ms-clear-color:black]
                   [--ms-clear-color-hover:rgb(var(--color-primary))]
-                 font-medium
-                  "
-                  v-model="formData.travel_type"
-                    mode="single"
-                    :taggable="true"
-                    placeholder="select travel Type"
-                    :close-on-select="true"
-                    :options="options.travel_type"
-                    label="name"
+                 font-medium"
+                 v-model="formData.travel_type"
+                  mode="single"
+                  :taggable="true"
+                  placeholder="select travel type"
+                  :close-on-select="true"
+                  :options="options.travel_type"
+                  label="name"
                 />
                   
                 </div>
@@ -165,7 +164,7 @@ import formMixin from '../../../mixins/forms/index'
 import Multiselect from '@vueform/multiselect'
 
 export default {
-    name: "New",
+    name: "Edit",
 
     props:{
       datas: Object,
@@ -178,7 +177,8 @@ export default {
     data(){
         return {
           formData: {
-            currency: 'xaf'
+            currency: 'xaf',
+            travel_type: 'flight',
           },
           
           options:{
@@ -189,7 +189,7 @@ export default {
               { name: '$', value: '$' }
             ],
             travel_type: [
-              { name: 'Flight', value: 'flight', default:true },
+              { name: 'Flight', value: 'flight' },
               { name: 'Hotel', value: 'hotel' },
               { name: 'Car', value: 'car' },
               { name: 'Mix', value: 'mix' }
@@ -198,13 +198,48 @@ export default {
           
         }
     },
- 
+    watch: { 
+      datas: {
+        handler(newval, oldval) { // watch it
+          //console.log(newval.id, oldval.id );
+          if(newval.id != undefined){
+            this.formData = {
+              ...this.formData,
+              ...this.datas
+            } //this.updateFormData()
+
+            console.log(this.formData);
+          }
+          
+          //alert()
+        },
+        deep: true,
+      },
+    },
     computed: {
         
         
     },
    
     methods:{
+      updateFormData(){
+            //console.log(this.datas?.passenger_name);
+
+            return {
+              passenger_name: this.datas?.passenger_name,
+              issuing_date: this.datas?.issuing_date,
+              travel_type: this.datas?.travel_type,
+              itinerary: this.datas?.itinerary,
+              currency: this.datas?.currency,
+
+              amount: this.datas?.amount,
+              airline: this.datas?.airline,
+              ticket_number: this.datas?.ticket_number,
+                // permisions: this.datas?.permisions?.map((permision) => { return permision.id}),
+                // roles: this.datas?.roles?.map((role) => { return role.id})
+            }
+            
+        },
         
       save () {
           this.$emit('upsert', this.formData)

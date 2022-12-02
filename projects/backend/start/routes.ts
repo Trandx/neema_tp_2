@@ -25,9 +25,11 @@ Route.get('/', 'TicketsController.index')
 Route.post('add', 'TicketsController.create')
 Route.post('update/:id', 'TicketsController.update')
 
+Route.post('airData', 'TicketsController.airData')
+
 Route.put('edit/:id', 'TicketsController.edit')
 
-Route.delete('delete/:id', 'TicketsController.destroy')
+Route.delete('delete', 'TicketsController.destroy')
 
 
 Route.post('/login', 'AuthController.login').as('auth-login');

@@ -36,7 +36,7 @@ export default class TicketsController {
           ]
         ),
         amount: schema.number(),
-        airline: schema.number(),
+        airline: schema.string(),
         ticket_number: schema.number(),
         passenger_name: schema.string({trim: true},
           [
@@ -62,26 +62,21 @@ export default class TicketsController {
       //console.log(validateData);
       
 
-      const tickets = new Ticket()
-
       try {
 
         
 
-        tickets.issuing_date = request.input('issuing_date') 
-        tickets.itinerary = request.input('itinerary')
-        tickets.currency = request.input('currency')
-        tickets.amount = request.input('amount')
-        tickets.passenger_name = request.input('passenger_name')
-        tickets.airline = request.input('airline')
-        tickets.ticket_number = request.input('ticket_number')
-        tickets.travel_type = request.input('travel_type')
-      
-        await tickets.save()
+        let data: any = request.only([ 'id','issuing_date', 'itinerary','currency', 'amount','passenger_name',
+        'airline', 'ticket_number', 'travel_type' ])
 
-        const data = {
+        console.log(data);
+        
+      
+        data = await Ticket.updateOrCreate({},data)
+
+        data = {
           message: "save successfuly",
-          data: tickets,
+          data: data,
           status: true,
           code: 201,
         }
@@ -108,10 +103,6 @@ export default class TicketsController {
       }
         
 
-        
-    }
-
-    public async store ({}: HttpContext){
         
     }
 
@@ -146,9 +137,19 @@ export default class TicketsController {
         
     }
 
-    public async destroy ({response, params}: HttpContext){
-        await Ticket.query().where('id', params.id).delete()
-        return response.redirect('/')
+    public async destroy ({response, request}: HttpContext){
+      
+      const id = request.input('id')
+      
+        let data:any = await Ticket.query().whereIn('id', id).delete()
+
+        data = {
+          message: "delete successfuly",
+          status: true,
+          code: 201,
+        }
+
+        return  response.status(201).json(data)
         
     }
 }
